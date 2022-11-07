@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        #map {
+            width: 1252px;
+            height: 788px;
+        }
+        </style>
+        <title>Schools in Punggol</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="data/MP19Subzone_1.js"></script>
+        <script src="data/Punggolbuildings_2.js"></script>
+        <script src="data/Clipped_3.js"></script>
+        <script src="data/PunggolSchools_4.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:14, minZoom:8
+        }).fitBounds([[1.3993511275219885,103.89954331521211],[1.4181537561052897,103.92925364429044]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OpenStreetMap_0');
+        map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
+        var layer_OpenStreetMap_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 8,
+            maxZoom: 14,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_0;
+        map.addLayer(layer_OpenStreetMap_0);
+        function pop_MP19Subzone_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name'] !== null ? autolinker.link(feature.properties['Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['description'] !== null ? autolinker.link(feature.properties['description'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['timestamp'] !== null ? autolinker.link(feature.properties['timestamp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['begin'] !== null ? autolinker.link(feature.properties['begin'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['end'] !== null ? autolinker.link(feature.properties['end'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['altitudeMode'] !== null ? autolinker.link(feature.properties['altitudeMode'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['tessellate'] !== null ? autolinker.link(feature.properties['tessellate'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['extrude'] !== null ? autolinker.link(feature.properties['extrude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['visibility'] !== null ? autolinker.link(feature.properties['visibility'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['drawOrder'] !== null ? autolinker.link(feature.properties['drawOrder'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['icon'] !== null ? autolinker.link(feature.properties['icon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SUBZONE_NO'] !== null ? autolinker.link(feature.properties['SUBZONE_NO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SUBZONE_N'] !== null ? autolinker.link(feature.properties['SUBZONE_N'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SUBZONE_C'] !== null ? autolinker.link(feature.properties['SUBZONE_C'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CA_IND'] !== null ? autolinker.link(feature.properties['CA_IND'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PLN_AREA_N'] !== null ? autolinker.link(feature.properties['PLN_AREA_N'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PLN_AREA_C'] !== null ? autolinker.link(feature.properties['PLN_AREA_C'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REGION_N'] !== null ? autolinker.link(feature.properties['REGION_N'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['REGION_C'] !== null ? autolinker.link(feature.properties['REGION_C'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['INC_CRC'] !== null ? autolinker.link(feature.properties['INC_CRC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FMEL_UPD_D'] !== null ? autolinker.link(feature.properties['FMEL_UPD_D'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['snippet'] !== null ? autolinker.link(feature.properties['snippet'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_MP19Subzone_1_0() {
+            return {
+                pane: 'pane_MP19Subzone_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(190,207,80,0.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_MP19Subzone_1');
+        map.getPane('pane_MP19Subzone_1').style.zIndex = 401;
+        map.getPane('pane_MP19Subzone_1').style['mix-blend-mode'] = 'normal';
+        var layer_MP19Subzone_1 = new L.geoJson(json_MP19Subzone_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_MP19Subzone_1',
+            layerName: 'layer_MP19Subzone_1',
+            pane: 'pane_MP19Subzone_1',
+            onEachFeature: pop_MP19Subzone_1,
+            style: style_MP19Subzone_1_0,
+        });
+        bounds_group.addLayer(layer_MP19Subzone_1);
+        map.addLayer(layer_MP19Subzone_1);
+        function pop_Punggolbuildings_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['osm_id'] !== null ? autolinker.link(feature.properties['osm_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['code'] !== null ? autolinker.link(feature.properties['code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fclass'] !== null ? autolinker.link(feature.properties['fclass'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['name'] !== null ? autolinker.link(feature.properties['name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['type'] !== null ? autolinker.link(feature.properties['type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Punggolbuildings_2_0(feature) {
+            switch(String(feature.properties['type'])) {
+                case 'civic':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(213,24,230,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'commercial':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(223,235,130,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'construction':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(205,174,51,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'education':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(162,228,81,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'house':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,113,26,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'mix_used':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,91,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'parking':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(97,174,213,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'public':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(144,116,214,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'religious':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(85,219,139,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'residential':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,236,108,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'retail':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(35,98,216,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'roof':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(42,201,153,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'school':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(240,109,209,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'service':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(194,133,235,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'temple':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(60,215,13,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'toilets':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,30,127,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'train_station':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,110,89,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'transportation':
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,100,119,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_Punggolbuildings_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,219,221,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Punggolbuildings_2');
+        map.getPane('pane_Punggolbuildings_2').style.zIndex = 402;
+        map.getPane('pane_Punggolbuildings_2').style['mix-blend-mode'] = 'normal';
+        var layer_Punggolbuildings_2 = new L.geoJson(json_Punggolbuildings_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Punggolbuildings_2',
+            layerName: 'layer_Punggolbuildings_2',
+            pane: 'pane_Punggolbuildings_2',
+            onEachFeature: pop_Punggolbuildings_2,
+            style: style_Punggolbuildings_2_0,
+        });
+        bounds_group.addLayer(layer_Punggolbuildings_2);
+        map.addLayer(layer_Punggolbuildings_2);
+        function pop_Clipped_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['school_name'] !== null ? autolinker.link(feature.properties['school_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['postal_code'] !== null ? autolinker.link(feature.properties['postal_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['type_code'] !== null ? autolinker.link(feature.properties['type_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['session_code'] !== null ? autolinker.link(feature.properties['session_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mainlevel_code'] !== null ? autolinker.link(feature.properties['mainlevel_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Clipped_3_0(feature) {
+            switch(String(feature.properties['mainlevel_code'])) {
+                case 'PRIMARY':
+                    return {
+                pane: 'pane_Clipped_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,131,98,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SECONDARY':
+                    return {
+                pane: 'pane_Clipped_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(78,29,225,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_Clipped_3');
+        map.getPane('pane_Clipped_3').style.zIndex = 403;
+        map.getPane('pane_Clipped_3').style['mix-blend-mode'] = 'normal';
+        var layer_Clipped_3 = new L.geoJson(json_Clipped_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Clipped_3',
+            layerName: 'layer_Clipped_3',
+            pane: 'pane_Clipped_3',
+            onEachFeature: pop_Clipped_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Clipped_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Clipped_3);
+        map.addLayer(layer_Clipped_3);
+        function pop_PunggolSchools_4(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['fid'] !== null ? autolinker.link(feature.properties['fid'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['school_name'] !== null ? autolinker.link(feature.properties['school_name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['postal_code'] !== null ? autolinker.link(feature.properties['postal_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['type_code'] !== null ? autolinker.link(feature.properties['type_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['session_code'] !== null ? autolinker.link(feature.properties['session_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mainlevel_code'] !== null ? autolinker.link(feature.properties['mainlevel_code'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? autolinker.link(feature.properties['Latitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? autolinker.link(feature.properties['Longitude'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PunggolSchools_4_0() {
+            return {
+                pane: 'pane_PunggolSchools_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,89,137,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PunggolSchools_4');
+        map.getPane('pane_PunggolSchools_4').style.zIndex = 404;
+        map.getPane('pane_PunggolSchools_4').style['mix-blend-mode'] = 'normal';
+        var layer_PunggolSchools_4 = new L.geoJson(json_PunggolSchools_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PunggolSchools_4',
+            layerName: 'layer_PunggolSchools_4',
+            pane: 'pane_PunggolSchools_4',
+            onEachFeature: pop_PunggolSchools_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_PunggolSchools_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_PunggolSchools_4);
+        map.addLayer(layer_PunggolSchools_4);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Schools in Punggol</h2>';
+            };
+            title.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/PunggolSchools_4.png" /> Punggol — Schools': layer_PunggolSchools_4,'Clipped<br /><table><tr><td style="text-align: center;"><img src="legend/Clipped_3_PRIMARY0.png" /></td><td>PRIMARY</td></tr><tr><td style="text-align: center;"><img src="legend/Clipped_3_SECONDARY1.png" /></td><td>SECONDARY</td></tr></table>': layer_Clipped_3,'Punggol — buildings<br /><table><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_civic0.png" /></td><td>civic</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_commercial1.png" /></td><td>commercial</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_construction2.png" /></td><td>construction</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_education3.png" /></td><td>education</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_house4.png" /></td><td>house</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_mixused5.png" /></td><td>mix_used</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_parking6.png" /></td><td>parking</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_public7.png" /></td><td>public</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_religious8.png" /></td><td>religious</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_residential9.png" /></td><td>residential</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_retail10.png" /></td><td>retail</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_roof11.png" /></td><td>roof</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_school12.png" /></td><td>school</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_service13.png" /></td><td>service</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_temple14.png" /></td><td>temple</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_toilets15.png" /></td><td>toilets</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_trainstation16.png" /></td><td>train_station</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_transportation17.png" /></td><td>transportation</td></tr><tr><td style="text-align: center;"><img src="legend/Punggolbuildings_2_18.png" /></td><td></td></tr></table>': layer_Punggolbuildings_2,'<img src="legend/MP19Subzone_1.png" /> MP19 Subzone': layer_MP19Subzone_1,"OpenStreetMap": layer_OpenStreetMap_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+---
+title: "Geocoding"
+author: "Dr. Kam Tin Seong"
+date: "27/10/2022 (updated: `r Sys.Date()`)"
+format:
+  html:
+    toc: true
+    css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+The code chunks below will perform geocoding using [SLA OneMap API](https://www.onemap.gov.sg/docs/#onemap-rest-apis).  
+
+The input data will be in csv file format.  It will be read into R Studio environment using *read_csv* function of **readr** package.
+
+A collection of http call functions of **httr** package of R will then be used to pass the individual records to the geocoding server at OneMap.  If the records are geocoded sucessfully, they will be saved in an R data table object call `found`.  if they failed to be geocoded, they will be saved in an R data table called `not_found`.
+
+Lastly, the found data table will join with the initial csv data table by using a unique identifier (i.e. POSTAL) common to both data tables.  The output data table will then save as an csv file called `found`.  
+
+## Installation and Launching
+
+Before we get started, we need to ensure that **tidyverse** and **httr** package of R have been installed and loaded into R environment. 
+
+```{r}
+pacman::p_load(httr, tidyverse)
+```
+
+## Geocoding
+
+```{r}
+url<-"https://developers.onemap.sg/commonapi/search"
+
+csv<-read_csv("csv/schools_info.csv")
+postcodes<-csv$`postal_code`
+
+found<-data.frame()
+not_found<-data.frame()
+
+for(postcode in postcodes){
+  query<-list('searchVal'=postcode,'returnGeom'='Y','getAddrDetails'='Y','pageNum'='1')
+  res<- GET(url,query=query)
+  
+  if((content(res)$found)!=0){
+    found<-rbind(found,data.frame(content(res))[4:13])
+  } else{
+    not_found = data.frame(postcode)
+  }
+}
+
+merged = merge(csv,found, by.x = 'postal_code', by.y = 'results.POSTAL', all = TRUE)
+write.csv(merged, file = 'csv/found.csv')
+write.csv(not_found, file = "csv/not_found.csv")
+```
+
+Credit: The script was originally prepared and contributed by **Linus Cheng Xin Wei** (SMT201 GIS for Urban Planning, batch AY2019-2020G1).
+
